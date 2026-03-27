@@ -74,6 +74,7 @@ button {
 <body>
 
 <button id="englishBtn">English</button>
+<button id="chineseBtn">中文</button>
 <canvas id="draw"></canvas>
 
 <h1>Imagineries of an island</h1>
@@ -531,8 +532,18 @@ Treasure hunt like Titanic...
 Plastic items treated as sacred...
 And so on...`;
 
-document.getElementById("englishBtn").addEventListener("click", () => {
+const englishBtn = document.getElementById("englishBtn");
+const chineseBtn = document.getElementById("chineseBtn");
+
+englishBtn.addEventListener("click", () => {
   sentences = englishText
+    .split("\n")
+    .map(s => s.trim())
+    .filter(s => s.length > 0);
+});
+
+chineseBtn.addEventListener("click", () => {
+  sentences = rawText
     .split("\n")
     .map(s => s.trim())
     .filter(s => s.length > 0);
