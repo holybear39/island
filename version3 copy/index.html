@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <title>Jelly Troupe</title>
+ <style>
+  body {
+    color: black;
+    font-family: 'Patrick Hand', 'Indie Flower', cursive;
+    text-align: center;
+    padding: 100px;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  #englishBtn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 20;
+    padding: 8px 12px;
+    font-family: 'Patrick Hand', cursive;
+    cursor: pointer;
+    background-color: #fff;
+    border: 2px solid #000;
+    border-radius: 4px;
+  }
+
+  h1 {
+    font-family: 'Indie Flower', cursive;
+    letter-spacing: 1px;
+  }
+
+  p {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 18px;
+    color: black;
+    transition: color 10s linear, opacity 10s linear, filter 10s linear;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    pointer-events: none;
+  }
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;           /* behind buttons */
+}
+button {
+  position: relative;    /* make sure button is above canvas */
+  z-index: 10;
+}
+
+ </style>
+</head>
+
+<body>
+
+<button id="englishBtn">English</button>
+<canvas id="draw"></canvas>
+
+<h1>Imagineries of an island</h1>
+<h1>关于岛的想像</h1>
+<p>This is where the islands remain.</p>
+
+
+
+<script>
+const canvas = document.getElementById("draw");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let drawing = false;
+let hue = 0;
+
+const bgAudio = new Audio('ambient.mp3');
+bgAudio.loop = true;
+bgAudio.volume = 0.1;
+
+const bgAudio2 = new Audio('wind.wav');
+bgAudio2.loop = true;
+bgAudio2.volume = 0.3;
+
+let audioStarted = false;
+function startAudio() {
+  if (!audioStarted) {
+    bgAudio.play().catch(err => console.log("Audio1 blocked:", err));
+    bgAudio2.play().catch(err => console.log("Audio2 blocked:", err));
+    audioStarted = true;
+  }
+}
+
+let rawText = `女神岛
+
+
+那是我们岛吗
+不是那个女神岛
+我们有一个女神叫
+我们女神像
+他给岛民送来了这个防晒霜
+哈哈哈
+那个岛民可能不理解这个东西是什么
+但是他们知道
+涂了女神赐予的这个东西
+他们出海的时候
+皮肤不会那么的被灼伤
+不会被晒伤
+他们可能不理解发生了什么
+所以他们就信仰这个女神
+然后他们会在自己的房顶上呃
+放上呃带两个镜片的支架的一个东西
+是他们的一个呃
+作为精神的一种平衡
+一种标识
+当他们每次出出海的时候
+内心是一种有个坚定的锚点在
+就是我的房顶上压着那个东西
+是保护我们每一次出海归来
+都非常的安全
+能够回到我的家里
+哦
+还有那个跑道
+跑道就是我们有一个
+这个是一个机场
+嗯这个机场可以通往哪些国家
+俄罗斯美国
+日本哈哈哈哈哈哈
+哈哈哈哈
+哦这是个坡是吧
+这个女神坐在这里
+坐在这然后哈哈哈哈
+这个是我们那
+个叫什么来着
+对就是一个石碑这样子
+上面会有一些文静文静的
+一些他们想要留下的文字的记载
+b型哈哈哈
+我觉得BBB型
+我觉得他跟女神身上的就是就是部位
+是一个材质的
+反正就可能他在这个现实意义上
+他可能是一个邪教小偷
+哈哈哈哈
+然后那边电话机上放了两本
+就是怎样使用一寸两寸的
+胜利迈向21世纪的三年
+对张先生呢
+对现在到我们这的老师已经进入21世
+纪这也是一个发展比较顺利的项目
+虽然他们都已经赢了
+但是对还是有一定的发展
+把这个中间的
+那我们带来了相机
+记录这个岛上的生活
+因为我们想要保存
+人类的所有的可能性
+的一些活动
+任何一种文明
+那个索尼电池是
+哈哈哈哈哈哈
+那岛民就从此过上了可以躺平的生活
+对他们有被动收入了
+对OK
+好以下就是我们的
+哈哈哈哈哈
+
+希望之岛
+有希望的岛
+有水有植物
+有书有音乐
+有可以看个时辰牌
+看个时间书
+无聊无聊了就听音乐
+听音乐无聊了就钓鱼
+还有还有种子
+不对这是钓蛇
+什么鬼啊
+好厉害反正字字给涂上
+又又又能
+他好像是给那个饮水机电话的
+一个讯息
+但是是打给上帝
+哦
+这也太现实了
+哈哈哈快来请
+快讲啊讲讲
+快把你这个讲给他们听
+其实我想的
+我觉得这个很像一种代表
+诱惑的一个意思
+因为这个这个电话
+其实从早上开始
+我以为我们要顺着每一个大宝
+然后所以我想这里做一个选人进去
+他首先要作为一个文化
+跟这个人进行一个沟通
+是用这个
+然后我们
+这个是对给他提供的一些信息
+或者是一些什么作品
+然后这个种子在这里就是代表
+他似乎马上就水水要滴下来了
+就是他在不同的人眼里
+这可能是一种希望
+然后然后这个这个
+这个是我们的另外一个朋友
+他把这个当做一种大炮
+我觉得也是一种
+就是保护我们这个小岛
+就是对外就是
+一种交流的一个自保的一种手段
+哈哈哈不合理是吧
+这是要自慰
+哪个岛吗
+这是我自己想象的
+然后我然后我接下来想
+因为我觉得我每个人都对这个岛
+就是我们这个小组里
+对这个岛有不同的想法
+然后我想法就是很
+就是很很很受到诱惑
+有很多挑战的一种想法
+然后他到这里之后外界诱惑
+yes或者说这个岛非常的诱惑
+所以我
+我想象中的这个岛可以叫塞壬岛
+但是我觉得叫希望岛也很好
+塞壬岛是不是跟他女神岛
+哦但是塞壬不是女神
+哈哈哈是的
+然后他就是通过那里之后
+这里有一个什么东西
+然后到这里
+他会其实会经历一些一些种
+他可能最开始发现
+这些种子是散落在外面的
+然后到这里他发现有好多好多种子
+但是这些种子
+他都包裹在一个相对来说
+比较真空的一个环境里
+就是
+他实际上也是像前面那个种子一样
+是不可生发的
+甚至我觉得我觉得这个颜色
+它本身也有让人有一种觉得很
+就是有点被吸引
+然后但是好像跟整体有点奇怪的那种
+就是很很亮眼
+但是你好像又觉得
+他在这个环境里不舒适的那种
+感觉就是希望他是一个很对颜色
+很很神奇的感觉
+好到这里
+因为这个东西
+他实际上是也是一个那个
+但是在这里
+他又成为了我们的一条路嘛
+好到这里之后就是他他他存在的地方
+他应该是这样的
+在这里就是这个线
+就是引导人到这里就是告诉你
+你要你要你
+要翻看这里的东西
+但实际上就是
+它可能是一种
+更加就是让你万记不住的东西
+因为我觉得
+十日谈本身就是在那个非常
+就他们上下会有一种呼应嘛
+就是在那个非常
+就是有瘟疫的那个阶段下
+大家自娱自乐
+或者说就是形成了一个非常
+就是跟外界无法交流的一个
+一个很很很很很很凝固的一个场景
+然后大家去交流那些东西
+我的那个那个场地
+是
+我对这个岛的一整个氛围的一个想象
+呃然后大概就是这样吧
+因为后面这些是呃
+大家其他人去办的
+但是我摆了一下这个
+我就是觉得它比较好看
+然后就没有了
+这是我对我主要变浅的那个部分
+我希望它是一个很充满诱惑
+然后你需要抗争的一种
+很对立的一个道理
+这是我的想法
+哦没有
+因为我们这个希望之岛
+每个人都很有自己的想法
+哈哈哈可是我们只有一个岛
+所以我觉得说嗯
+怎么好好利用这个岛来讲的话
+非常重要
+那既然既然是一个无人岛
+我想最重要的是实用性
+所以游泳池呢
+太大所以已经被否决了
+可以搬出来
+对所以如果说我们有被动收入
+像隔壁的那个女生岛有被动收入
+我们可以负担那种比较富裕的生活
+我们就可以建一个游泳池
+在现阶段没办法
+所以我们要怀有希望嘛
+那个孟子讲的君呃
+君子无处而不而不至的
+所以我们现在有这种条件
+我们就先这样子
+那日后有被动收入我们再改善
+OK
+当然是以后
+因为希望就代表什么都有可能发生
+我们还有最后一个岗
+什
+么
+
+无名岛
+我觉得呃
+这这
+这是几个无知的外岛人想要上去探险
+然后他们已经没得了
+哈哈哈哈
+我本来羡慕你们有两艘游艇
+哈哈哈
+如果中间我们输点什么
+什么没什么要输
+你看好这个这个这个这个这个这个吗
+呃这个没什么要
+寻宝之旅
+就是像泰坦尼克
+里面一样
+就是那块基石留下来
+比如说像那种塑料制品啊什么
+他们岛上可能处于一个原始状态
+然后就不理解这些东西
+就把这个看作一个神明留下来的东西
+然后去嗯嗯
+比如说把那个那个
+把那个金元宝当做一个神对待
+然后把它放到竹筏上
+然后沟通起来
+你说那你上次说这支笔让他带你
+就是带你开始画画
+然后现在变成了法杖
+那眼镜呢
+那眼镜那眼镜好像跳舞的演员
+上了一个旋涡
+旋涡中央的一个怪兽怪兽
+哼哼我
+我啊我们的想法其实很分散
+就是大家在各干各的
+然后把他们硬凑在一起
+我我放的其实是这个
+就是电子宠物
+就是因为一开始是你
+谁先放的这个小鸭
+我放的小鸭
+然后找到了一个共同点
+就是他们都是宠物
+只是一个是真实的
+有可能另外一个是电子的吧
+然后
+就把它摆在了一个机器的播放器
+信信号信号的中心
+然后我想到的是就是呃
+很很通俗的一个东西
+就是现在跟电子越来越去
+就是大家被绑定在一起
+但是我的生活当中又出现
+了一个真实的
+真实跟虚拟之间的一些啊链接啊
+特别像岛现在已经没人了
+这只鸭子就像岛的一个主人
+哈哈哈
+曾经的文明最好永远都不要重建
+他们还要死
+哈哈哈
+啊这个这个就是下面有个鸭子啊
+然后万一下雨你在上面躲雨啊
+哈哈哈
+然后这个不是后面那个无人岛嘛
+然后
+后面可能鸭子就是从什么细胞啊
+然后呃变成一个生物体啊
+然后开始新的文明吧
+哦
+然后就就就是这个
+一个摆一个圆圈
+然后里面有漩涡
+感觉挺好看的
+哈哈哈
+然后好了`;
+
+let sentences = rawText
+  .split("\n")
+  .map(s => s.trim())
+  .filter(s => s.length > 0);
+
+let englishText = `Goddess Island
+
+Is this our island?
+Not that Goddess Island.
+We have a goddess named...
+Our goddess statue...
+She brought sunscreen to the islanders...
+Haha
+The islanders may not understand what it is...
+But they know
+With the goddess's gift applied
+Their skin won't burn at sea...
+They might not understand what happens
+So they believe in the goddess...
+And they put a support with two lenses on their rooftops...
+As a kind of spiritual balance...
+Every time they go out to sea, they have an anchor in their heart...
+That object protects their safe return home...
+Oh, and the runway...
+This is an airport...
+It can reach countries like Russia, the USA, Japan...
+Haha...
+And there's a slope over there...
+The goddess sits here...
+And then, haha...
+There's a monument here...
+With writings they want to leave behind...
+Type B, haha...
+I think it's B type...
+It relates to the material of the goddess statue...
+Anyway, it might be a small cult in reality...
+Haha...
+And over there, on the phone, there are two books...
+About how to use one-inch and two-inch formats...
+Victory towards the 21st century...
+Mr. Zhang...
+Our teachers have entered the 21st century too...
+Although they already won...
+There's still some development...
+We brought a camera...
+To record life on the island...
+To preserve all human possibilities...
+Any kind of civilization...
+That Sony battery...
+Haha...
+The islanders can now live a relaxed life...
+They have passive income...
+OK...
+Now, the "Island of Hope"...
+A hopeful island...
+With water, plants, books, music...
+You can check the time, read, listen to music, fish...
+And there are seeds...
+No, that's fishing for snakes...
+Amazing, each word gets painted...
+He seems to leave a message for the water dispenser phone...
+But it's addressed to God...
+This feels like temptation...
+Because this phone...
+From the morning, I thought we would follow each great treasure...
+I imagined a selection here...
+As a culture, communicating with people...
+Providing some information or works...
+This seed represents imminent hope...
+Another friend treats it as a cannon...
+Protecting our little island externally...
+Haha, unreasonable right? It's self-indulgent...
+Which island? This is my imagined one...
+Later, I want...
+Each of us has a different idea about the island...
+My imagination is filled with temptation...
+Lots of challenges...
+After reaching here, external temptations arise...
+Yes, the island is very tempting...
+I imagine this island as Siren Island...
+But Hope Island is also fine...
+Siren isn’t a goddess...
+Yes, through here, something happens...
+At first, seeds are scattered outside...
+Later, he finds many seeds...
+But they are in a relatively sealed environment...
+Like the previous seed, they are unviable...
+The colors attract attention but feel slightly off...
+Bright but not comfortable...
+They become a path here...
+Guiding people through...
+They might be forgettable...
+Like the Decameron, in a plague stage...
+People entertain themselves...
+Forming a very isolated scene...
+My space...
+That's my main imagined part...
+I want it full of temptation, something to resist...
+This is my thought...
+No, everyone has their own idea about Hope Island...
+Haha, but we have only one island...
+We need to use it wisely...
+Being an uninhabited island, practicality is key...
+Swimming pool is too big, so rejected...
+Later, if we have passive income, we can build it...
+Hope represents possibilities...
+One last checkpoint...
+Nameless Island...
+Some uninformed outsiders want to explore...
+They have no supplies...
+Haha, I envied you with two yachts...
+If we lose something along the way...
+Nothing important...
+Treasure hunt like Titanic...
+Plastic items treated as sacred...
+And so on...`;
+
+document.getElementById("englishBtn").addEventListener("click", () => {
+  sentences = englishText
+    .split("\n")
+    .map(s => s.trim())
+    .filter(s => s.length > 0);
+});
+
+let lastX = 0;
+let lastY = 0;
+
+canvas.addEventListener("mousedown", (e) => {
+  startAudio();
+  drawing = true;
+  ctx.beginPath();
+  ctx.moveTo(e.clientX, e.clientY);
+});
+
+// Touch support for mobile
+canvas.addEventListener("touchstart", (e) => {
+  startAudio();
+  e.preventDefault();
+  const touch = e.touches[0];
+  drawing = true;
+  ctx.beginPath();
+  ctx.moveTo(touch.clientX, touch.clientY);
+});
+
+canvas.addEventListener("touchend", () => drawing = false);
+canvas.addEventListener("touchcancel", () => drawing = false);
+
+canvas.addEventListener("touchmove", (e) => {
+  e.preventDefault();
+  const touch = e.touches[0];
+  draw({ clientX: touch.clientX, clientY: touch.clientY });
+});
+
+canvas.addEventListener("mouseup", () => drawing = false);
+canvas.addEventListener("mouseleave", () => drawing = false);
+canvas.addEventListener("mousemove", draw);
+
+function draw(e) {
+  if (!drawing) return;
+
+  lastX = e.clientX;
+  lastY = e.clientY;
+
+  ctx.lineWidth = 0.8;
+  ctx.lineCap = "round";
+  ctx.globalAlpha = 0.2;
+  ctx.shadowBlur = 6;
+  ctx.shadowColor = ctx.strokeStyle;
+
+  ctx.strokeStyle = `hsl(${hue}, 100%, 60%)`;
+
+  ctx.lineTo(e.clientX, e.clientY);
+  ctx.stroke();
+
+  hue += 0.5;
+  if (hue >= 360) hue = 0;
+
+  if (Math.random() < 0.04) {
+    showSentence(lastX, lastY);
+  }
+}
+
+function showSentence(x, y) {
+  const el = document.createElement("p");
+  const text = sentences[Math.floor(Math.random() * sentences.length)];
+
+  const offsetX = (Math.random() - 0.5) * 40;
+  const startY = y + (Math.random() - 0.5) * 60;
+  el.style.top = startY + "px";
+
+  // keep text within viewport
+  const safeMargin = 40;
+  const maxX = window.innerWidth - safeMargin;
+  const maxY = window.innerHeight - safeMargin;
+  const clampedX = Math.max(safeMargin, Math.min(x + offsetX, maxX));
+  const clampedY = Math.max(safeMargin, Math.min(startY, maxY));
+  el.style.left = clampedX + "px";
+  el.style.top = clampedY + "px";
+
+  const spans = [];
+  el.style.fontSize = (14 + Math.random() * 6) + "px";
+  text.split("").forEach(char => {
+    const span = document.createElement("span");
+    span.innerText = char;
+    span.style.display = "inline-block";
+    span.style.marginRight = "1px";
+    span.style.transition = "transform 10s ease-out, opacity 10s ease-out";
+    el.appendChild(span);
+    spans.push(span);
+  });
+
+  el.style.position = "absolute";
+  el.style.maxWidth = "200px";
+  el.style.lineHeight = "1.4";
+  el.style.wordBreak = "break-word";
+  el.style.whiteSpace = "normal";
+  el.style.letterSpacing = "0.5px";
+
+
+  const centerX = window.innerWidth / 2;
+  const centerY = window.innerHeight / 2;
+
+  el.style.opacity = 0;
+  el.style.transition = "opacity 2s ease-out";
+
+  document.body.appendChild(el);
+  // subtle fade in
+  el.style.opacity = 0;
+  setTimeout(() => {
+    el.style.opacity = 1;
+  }, 200);
+
+  // dissolve + drift (no jump)
+  setTimeout(() => {
+    spans.forEach((span) => {
+      const dx = (centerX - (x + offsetX)) + (Math.random() - 0.5) * 40;
+      const dy = (centerY - startY) + (Math.random() - 0.5) * 40;
+      span.style.transform =
+        "translate(" + dx + "px, " + dy + "px) scale(0.35) rotate(" + (Math.random()*180) + "deg)";
+      span.style.opacity = 0.2;
+    });
+  }, 1500);
+
+  setTimeout(() => {
+    el.style.opacity = 0;
+  }, 2500);
+
+  setTimeout(() => {
+    el.remove();
+  }, 4500);
+}
+
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+// collapse headers to center after 10 seconds
+setTimeout(() => {
+  const headers = document.querySelectorAll("h1");
+  const centerX = window.innerWidth / 2;
+  const centerY = window.innerHeight / 2;
+
+  headers.forEach((header) => {
+    const rect = header.getBoundingClientRect();
+    const dx = centerX - (rect.left + rect.width / 2);
+    const dy = centerY - (rect.top + rect.height / 2);
+
+    // wrap each letter in spans for animation
+    const text = header.innerText;
+    header.innerText = "";
+    const spans = [];
+    text.split("").forEach(char => {
+      const span = document.createElement("span");
+      span.innerText = char;
+      span.style.display = "inline-block";
+      span.style.transition = "transform 8s ease-out, opacity 8s ease-out";
+      header.appendChild(span);
+      spans.push(span);
+    });
+
+    // apply transform to move letters to center (subtle start)
+    setTimeout(() => {
+      spans.forEach(span => {
+        const randomOffsetX = (Math.random() - 0.5) * 20;
+        const randomOffsetY = (Math.random() - 0.5) * 20;
+        // transform fully to center
+        span.style.transform = "translate(" + (dx + randomOffsetX) + "px, " + (dy + randomOffsetY) + "px) scale(0.3) rotate(" + (Math.random()*180) + "deg)";
+        span.style.opacity = 0;
+      });
+    }, 100);
+  });
+}, 10000);
+</script>
+
+</body>
+</html>
