@@ -12,6 +12,7 @@
     padding: 100px;
     margin: 0;
     overflow: hidden;
+    background-color: white;
   }
 
   #englishBtn {
@@ -589,7 +590,7 @@ function draw(e) {
   clearTimeout(idleTimer);
   idleTimer = setTimeout(() => {
     fadeCanvas();
-  }, 3000);
+  }, 10000);
 
   lastX = e.clientX;
   lastY = e.clientY;
@@ -615,15 +616,25 @@ function draw(e) {
 
 function fadeCanvas() {
   let fadeAmount = 0;
+
   function fadeStep() {
-    fadeAmount += 0.02;
-    ctx.fillStyle = "rgba(255,255,255,0.05)";
+    fadeAmount += 1/420;
+
+    // instead of painting white, gently erase existing strokes
+    ctx.save();
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.fillStyle = "rgba(0,0,0,0.01)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // gradually reduce shadow blur as well
+    ctx.shadowBlur *= 0.96;
+    if (ctx.shadowBlur < 0.1) ctx.shadowBlur = 0;
+    ctx.restore();
 
     if (fadeAmount < 1) {
       requestAnimationFrame(fadeStep);
     }
   }
+
   fadeStep();
 }
 
