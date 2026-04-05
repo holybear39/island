@@ -92,6 +92,7 @@ canvas.height = window.innerHeight;
 
 let drawing = false;
 let hue = 0;
+let idleTimer;
 
 const bgAudio = new Audio('ambient.mp3');
 bgAudio.loop = true;
@@ -585,6 +586,11 @@ canvas.addEventListener("mousemove", draw);
 function draw(e) {
   if (!drawing) return;
 
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => {
+    fadeCanvas();
+  }, 3000);
+
   lastX = e.clientX;
   lastY = e.clientY;
 
@@ -605,6 +611,20 @@ function draw(e) {
   if (Math.random() < 0.04) {
     showSentence(lastX, lastY);
   }
+}
+
+function fadeCanvas() {
+  let fadeAmount = 0;
+  function fadeStep() {
+    fadeAmount += 0.02;
+    ctx.fillStyle = "rgba(255,255,255,0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    if (fadeAmount < 1) {
+      requestAnimationFrame(fadeStep);
+    }
+  }
+  fadeStep();
 }
 
 function showSentence(x, y) {
